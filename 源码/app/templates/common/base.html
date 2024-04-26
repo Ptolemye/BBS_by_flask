@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ch">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="蒲晓阳">
+    <title>{% block title %} base {% endblock %}</title>
+
+    {% block css %}
+    <!-- css model part -->
+    <style>
+        html,body {
+            height: 100%;
+            
+        }
+        
+        body {
+            background-image: linear-gradient(to left, #2CD8D5 0%, #C5C1FF 56%, #FFBAC3 100%);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            display: flex;
+            flex: 1;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}">
+    {% endblock %}
+</head>
+
+
+<body class="container">
+    {% include 'common/header.html' %}
+    <main>
+        {% block content %}
+        <!-- 自定义模块 -->
+        {% endblock %}
+    </main>
+    {% include 'common/footer.html' %}
+
+    {% block js %}
+    <!-- js 模块 -->
+
+    <script src="{{ url_for('static', filename = 'js/bootstrap.bundle.min.js')}}"></script>
+    {% endblock %}
+</body>
+
+</html>
+

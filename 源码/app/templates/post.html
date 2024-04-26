@@ -1,0 +1,147 @@
+<!-- @format -->
+
+{% extends 'common/base.html' %} {% block title %} 帖子详情 {% endblock %} {%
+block content %}
+<style>
+  .fixed-button {
+    position: fixed;
+    top: 200px;
+    right: 12%;
+  }
+</style>
+
+<div class="fixed-button">
+  <form action="/post/{{ post_data.post_id }}" method="POST">
+    <input type="hidden" name="identifier" value="like">
+    <button type="submit" class="btn btn-outline-success">
+      点赞
+    </button>
+  </form>
+  <button
+    type="button"
+    name="report"
+    data-bs-toggle="modal"
+    data-bs-target="#myModal"
+    class="btn btn-outline-warning my-3"
+  >
+    举报
+  </button>
+</div>
+
+<div class="container shadow w-75 bg-light rounded-3">
+  <div class="container-fluid my-3">
+    <div class="author-part row">
+      <div class="col-auto">
+        <a
+          href="/profile/{{ post_data.owner.user_id}}/introduct"
+          class="d-block link-dark text-decoration-none"
+        >
+          <img
+            src="{{ url_for('static', filename = post_data.owner.image_path ) }}"
+            alt="mod"
+            width="48"
+            height="48"
+            class="rounded-circle"
+          />
+        </a>
+      </div>
+      <div class="col flex-column">
+        <div>
+          <p>{{ post_data.owner.user_name }}</p>
+        </div>
+        <div><small class="text-muted">{{ post_data.time }}</small></div>
+      </div>
+      <div class="col-2 float-end">
+        <small class="text-muted">点赞数: {{ post_data.like_count }}</small>
+      </div>
+    </div>
+    <hr />
+    <div class="container-fluid">
+      <h3>{{ post_data.title }}</h3>
+      <div class="">{{ post_data.content | safe }}</div>
+    </div>
+    <hr />
+    <div class="container">
+      <form action="/post/{{ post_data.post_id }}" method="POST">
+        <input type="hidden" name="identifier" value="post_comment">
+        <div class="row">
+          <div class="col">
+            <textarea
+              class="form-control"
+              id="comment"
+              name="comment"
+              rows="3"
+              placeholder="发表你的评论吧..."
+              maxlength="30"
+              required
+            ></textarea>
+          </div>
+          <div class="col-1 d-flex justify-content-center align-items-center">
+            <button
+              type="submit"
+              class="btn btn-success text-light"
+            >
+              发布
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="container-fluid">{% include 'common/comments.html' %}</div>
+</div>
+
+<!-- 模态框 -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-dialog-centered" tabindex="-1">
+    <div class="modal-content">
+      <!-- 模态框头部 -->
+      <div class="modal-header">
+        <h5 class="modal-title">举报"{{ post_data.title }}"</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <form action="/post/{{ post_data.post_id }}" method="POST">
+        <input type="hidden" name="identifier" value="report">
+        <!-- 模态框内容 -->
+        <div class="modal-body">
+          <textarea
+            class="form-control"
+            id="content"
+            name="content"
+            rows="3"
+            placeholder="请写下你的举报内容..."
+            maxlength="100"
+            required
+          ></textarea>
+        </div>
+        <!-- 模态框底部 -->
+        <div class="modal-footer">
+          <div class="row flex-grow-1">
+            <div class="col-6">
+              <button
+                type="submit"
+                class="btn btn-success text-light"
+              >
+                确认举报
+              </button>
+            </div>
+            <div class="col-6 d-flex justify-content-center align-items-center">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                关闭
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

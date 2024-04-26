@@ -1,0 +1,39 @@
+{% extends 'common/in.html' %}
+
+{% block title %}
+    登录
+{% endblock  %}
+
+{% block content %}
+<h1 class="text-center">登录</h1>
+<form action="/login/" method="POST">
+    <div class="text-muted" style="text-align: right;">
+        <small class="text-muted">没有账号？<a href='/register/' class="text-decoration-none">注册</a></small>
+    </div>
+    <div class="mb-3">
+        <label for="user_email" class="form-label">电子邮箱</label>
+        <input type="email" class="form-control" id="username" name="user_email" placeholder="请输入邮箱" required>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">账号密码</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" required>
+    </div>
+    <div class="row">
+        <div class="col-auto ms-5 p-3">
+            <button type="submit" name="identifier" value="admin_login" class="btn btn-secondary">管理员登录</button>
+        </div>
+        <div class="col me-5 p-3">
+            <button type="submit" name="identifier" value="user_login" class="btn btn-primary float-end">用户登录</button>
+        </div>
+    </div>
+</form>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for message in messages %}
+          <div class="flash-message">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+{% endwith %}
+{% endblock  %}

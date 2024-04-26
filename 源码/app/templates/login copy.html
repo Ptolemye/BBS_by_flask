@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Page</title>
+  <style>
+    .login-form {
+      max-width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .login-form h2 {
+      text-align: center;
+    }
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    .login-form button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .login-form .switch-login {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-form">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button id="loginBtn">Login</button>
+    <div class="switch-login">
+      <a href="#" id="switchCustomer">Customer Login</a> |
+      <a href="#" id="switchAdmin">Admin Login</a>
+    </div>
+  </div>
+
+  <script>
+        document.getElementById("loginBtn").addEventListener("click", function() {
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+
+      // 构造要发送的数据
+      var data = {
+        username: username,
+        password: password
+      };
+
+      // 发送POST请求
+      fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(function(response) {
+        if (response.ok) {
+          // 登录成功，进行后续操作
+          console.log("Login successful");
+          // 这里可以进行页面跳转或其他操作
+        } else {
+          // 登录失败，处理错误
+          console.log("Login failed");
+          // 这里可以显示错误信息给用户
+        }
+      })
+      .catch(function(error) {
+        console.log("Error:", error);
+      });
+    });
+
+    // 切换到客户登录
+    document.getElementById("switchCustomer").addEventListener("click", function(event) {
+      event.preventDefault();
+      document.getElementById("username").placeholder = "Customer Username";
+      document.getElementById("password").placeholder = "Customer Password";
+      document.getElementById("loginBtn").innerHTML = "Customer Login";
+    });
+
+    // 切换到管理员登录
+    document.getElementById("switchAdmin").addEventListener("click", function(event) {
+      event.preventDefault();
+      document.getElementById("username").placeholder = "Admin Username";
+      document.getElementById("password").placeholder = "Admin Password";
+      document.getElementById("loginBtn").innerHTML = "Admin Login";
+    });
+  </script>
+</body>
+</html>

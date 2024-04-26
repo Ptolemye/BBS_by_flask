@@ -1,0 +1,72 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+
+{% if front_data %}
+<div class="container bg-light border rounded-3">
+  <div class="list-group my-2">
+    {% for post in front_data %}
+    <li class="list-group-item list-group-item-action">
+      <div class="row">
+        <div class="col">
+          <a href="/post/{{ post.post_id }}" class="text-decoration-none text-reset">
+            <div class="row">
+              <div class="col-9 flex-column">
+                <h5 class="h5">{{ post.title }}</h5>
+                <pre>——{{ post.summary }}</pre>
+              </div>
+              <div class="col-3 flex-column">
+                <div class="d-flex">
+                  <img src="{{ url_for('static', filename = post.owner.image_path ) }}" alt="mod" width="32" height="32"
+                    class="rounded-circle" />
+                  <h5>{{ post.owner.user_name }}</h5>
+                </div>
+                <p class="m-0">发表于: {{ post.time }}</p>
+                <small>点赞数: {{ post.like_count }}</small>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-1 d-flex align-items-center">
+          <a href="/admin/comments/{{post.post_id}}" class="btn btn-info">评论</a>
+        </div>
+        <div class="col-1 d-flex align-items-center">
+          <button class="btn btn-outline-danger" type="button" name="delete" data-bs-toggle="modal"
+            data-bs-target="#deleteModal{{ loop.index }}">
+            删除
+          </button>
+
+        </div>
+      </div>
+    </li>
+        <!-- 删除模态框 -->
+          <div class="modal fade" id="deleteModal{{ loop.index }}" aria-labelledby="deleteModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">提示！</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">确认删除 {{ post.title }} 吗？</div>
+                <div class="modal-footer justify-content-between">
+                  <form action="{{ request.path }}" method="POST">
+                    <button type="submit" name="delete_post" class="btn btn-danger" data-bs-dismiss="modal"
+                      value="{{ post.post_id }}">
+                      删除
+                    </button>
+                  </form>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    关闭
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+{% include 'common/empty.html' %}
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,25 @@
+<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title">提示！</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+              确认删除？
+          </div>
+          <div class="modal-footer">
+              <div class="row">
+                  <div class="col-6">
+                      <form action="{{ request.path }}" method="post">
+                          <button type="submit" name="delete_post" class="btn btn-danger" data-bs-dismiss="modal">关闭</button>
+                      </form>
+                  </div>
+                  <div class="col-6">
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">关闭</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

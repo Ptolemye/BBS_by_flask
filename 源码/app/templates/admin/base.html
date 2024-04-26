@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ch">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin</title>
+
+    <style>
+        html, body {
+            height: 100%;
+            min-height: -webkit-fill-available;
+        }
+        main {
+            display: flex;
+            flex-wrap: nowrap;
+            height: 100%;
+            height: -webik-fill-availiable;
+            max-height: 100vh;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}">
+</head>
+
+<body>
+    <main>
+        <!-- 导航栏部分 -->
+        <nav class="d-flex">
+            <div class="d-flex flex-column flex-lg-shrink-1 p-3 text-white bg-dark" style="width: 200px;">
+                <a href="/admin/posts/" class="d-flex ms-auto me-auto mb-md-0 text-white text-decoration-none">
+                    <span class="fs-4">BBS管理</span>
+                </a>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="/admin/posts/" class="nav-link text-light {% if request.path == '/admin/posts/' %}active{% endif %}" 
+                            aria-current="page">
+                            帖子管理
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/users/" class="nav-link text-light {% if request.path == '/admin/users/' %}active{% endif %}" 
+                            aria-current="page">
+                            账户管理
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/reports/" class="nav-link text-light {% if request.path == '/admin/reports/' %}active{% endif %}" 
+                            aria-current="page">
+                            举报信息
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link text-light disabled {% if request.path == '/admin/comments/' ~post_id~ '/' %}active{% endif %}" 
+                         aria-current="page">
+                            帖子评论
+                        </a>
+                    </li>
+                </ul>
+        
+                <hr>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                        id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <strong class="align-i-center">欢迎, 管理员</strong>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <li>
+                            <p class="dropdown-item-text">{{ email.user_name }}</p>
+                        </li>
+                        <li>
+                            <p class="text-muted dropdown-item-text">ID: {{ email.user_id }}</p>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="flex-grow-1 d-flex flex-column" style="max-height: 100%;">
+            <header class="p-3 bg-dark text-white" style="border-bottom: 2px solid gray;">
+                <div class="container">
+                    <div class="d-flex justify-content-center">
+                        <form action="{{ request.path }}" method="post" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                            <input type="hidden" name="identifier" value="search">
+                            <input type="search" name="query" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+                        </form>
+                    </div>
+                </div>
+            </header>
+            <div class="container-fluid p-3 d-flex flex-grow-1" style="max-height: 100%; overflow-y: auto;">
+                <div class="container">
+                    {% block content %}
+                    <!-- 内容 -->
+                    {% endblock  %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename = 'js/bootstrap.bundle.min.js')}}"></script>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+{% if front_data %}
+<div class="container bg-light border rounded-3">
+    <ul class="list-group my-2">
+        {% for report in front_data %}
+        <li class="list-group-item list-group-item-action">
+            <div class="row">
+                <div class="col-2 flex-column">
+                    <h6 class="text-primary">举报号: {{ report.report_id }}</h6>
+                    <small>举报时间: <b>{{ report.time }}</b></small>
+                </div>
+                <div class="col-2 flex-column">
+                    <h6 class="text-secondary">贴名：{{ report.post_title }}</h6>
+                    <small>贴子ID: <b>{{ report.post_id }}</b></small>
+                </div>
+                <div class="col">
+                    <p class="text-info text-muted"><b>举报原因:</b>{{ report.content }}</p>
+                </div>
+                <div class="col-2 flex-column">
+                    <h6>举报人:</h6>
+                    <h6 class="text-secondary">{{ report.reporter_id }}</h6>
+                </div>
+                <div class="col-1 d-flex align-items-center">
+                    <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="modal"
+                        data-bs-target="#dealModal{{ loop.index }}">
+                        处理
+                    </button>
+
+                </div>
+            </div>
+        </li>
+            <!-- 处理模态框 -->
+                    <div class="modal fade" id="dealModal{{ loop.index }}" data-bs-backdrop="static" data-bs-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">操作提示！</h4>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">请确认您已处理了该举报信息，这会删除该举报信息！</div>
+                            <div class="modal-footer justify-content-between">
+                              <form action="{{ request.path }}" method="POST">
+                                <button type="submit" name="delete_report" class="btn btn-danger" data-bs-dismiss="modal"
+                                  value="{{ report.report_id }}">
+                                  确认删除
+                                </button>
+                              </form>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                取消
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                    </div> 
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
+{% include 'common/empty.html' %}
+{% endif %}
+{% endblock %}

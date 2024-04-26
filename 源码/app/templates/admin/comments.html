@@ -1,0 +1,58 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+{% if front_data %}
+<div class="container bg-light border rounded-3">
+    <ul class="list-group my-2">
+        {% for cot in front_data %}
+        <li class="list-group-item list-group-item-action">
+            <div class="row">
+                <div class="col-1 d-flex justify-content-center align-items-center">
+                    <a href="/profile/{{ cot.critic.user_id}}/introduct" class="d-block link-dark text-decoration-none">
+                        <img src="{{ url_for('static', filename = cot.critic.image_path ) }}" alt="mod" width="32" height="32" class="rounded-circle">
+                    </a>
+                </div>
+                <div class="col flex-column">
+                    <a href="/profile/{{ cot.critic.user_id}}/introduct" class="d-block link-dark text-decoration-none">
+                        <small><b>{{ cot.critic.user_name }}</b></small>
+                    </a>
+                    <p class="m-0 text-muted text-info">{{ cot.content }}</p>
+                    <small class="text-muted">{{ cot.time }}</small>
+                </div>
+                <div class="col-1 d-flex align-items-center">
+                    <button class="btn btn-outline-danger" type="button" name="delete" data-bs-toggle="modal"
+                      data-bs-target="#deleteModal{{ loop.index }}">
+                      删除
+                    </button>
+                </div>
+            </div>
+        </li>
+            <!-- 删除模态框 -->
+                    <div class="modal fade" id="deleteModal{{ loop.index }}" tabindex="-1">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h4 class="modal-title">操作提示！</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                          </div>
+                          <div class="modal-body">确认删除ID为‘{{ cot.comments_id }}’的评论吗？</div>
+                          <div class="modal-footer justify-content-between">
+                            <form action="{{ request.path }}" method="POST">
+                              <button type="submit" name="delete_comment" class="btn btn-danger" data-bs-dismiss="modal"
+                                value="{{ cot.comments_id }}">
+                                确认删除
+                              </button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                              取消
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
+{% include 'common/empty.html' %}
+{% endif %}
+{% endblock  %}

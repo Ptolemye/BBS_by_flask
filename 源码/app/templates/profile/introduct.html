@@ -1,0 +1,135 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+{% include 'profile/sider.html' %}
+<div class="container shadow w-50 bg-light rounded-3">
+  <div class="container m-2">
+    <div class="row m-3">
+      <div class="col">
+        <img src="{{ url_for('static', filename = user_data.image_path ) }}" alt="mod" width="80" height="80"
+          class="rounded-circle">
+      </div>
+      <div class="col-auto flex-column">
+        <div class="user_state">
+          {% if user_data.blocked == True %}
+          <p class="text-end text-danger">封禁</p>
+          {% else %}
+          <p class="text-end text-success">活动</p>
+          {% endif %}
+        </div>
+        <div class="register_time">
+          <small class="text-muted">{{ user_data.user_register_time }}</small>
+        </div>
+      </div>
+    </div>
+    <div class="row m-3">
+      <div class="col flex-column">
+        <h3 class="text-muted h3">用户名：{{ user_data.user_name }}</h3>
+        <small class="text-muted p-3">用户email：{{ user_data.user_id }}</small>
+        <div class="card m-4">
+          <div class="card-body m-2">
+            <blockquote>
+              {{ user_data.content }}
+            </blockquote>
+          </div>
+        </div>
+      </div>
+      {% if user_data.user_id == email.user_id %}
+      <div class="col d-flex flex-column justify-content-end">
+        <button type="button" class="btn btn-info m-3" data-bs-toggle="modal" data-bs-target="#uploadModal">
+          上传修改图片
+        </button>
+        <button type="button" class="btn btn-success m-3" data-bs-toggle="modal" data-bs-target="#modifyModal">
+          修改个人资料
+        </button>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadModalLabel">上传头像</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ request.path }}" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="identifier" value="upload_image">
+          <div class="mb-3">
+            <label for="previewImage" class="form-label">预览</label>
+            <img id="previewImage" class="img-fluid rounded-circle" width="80" height="80">
+          </div>
+          <div class="mb-3">
+            <label for="avatar" class="form-label">选择头像图片</label>
+            <input type="file" class="form-control" id="avatar" name="avatar" accept="image/*">
+          </div>
+          <p id="error_msg"></p>
+          <button type="submit" class="btn btn-primary">上传</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">修改个人资料</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ request.path }}" method="post" id="modifyForm">
+          <input type="hidden" name="identifier" value="modify_user_data">
+          <div class="mb-3">
+            <label for="user_name" class="form-label">用户名称</label>
+            <input type="text" name="user_name" id="user_name" class="form-control" placeholder="请输入名称"
+              value="{{ user_data.user_name }}" maxlength="10">
+          </div>
+          <div class="mb-3">
+            <label for="user_profile" class="form-label">用户简介</label>
+            <textarea name="user_profile" id="user_profile" class="form-control" cols="30" rows="3"
+              placeholder="输入简介">{{ user_data.content }}</textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="row flex-grow-1">
+          <div class="col-6">
+            <button class="btn btn-outline-success" id="confirmModify">
+              确认修改
+            </button>
+          </div>
+          <div class="col-6 d-flex justify-content-center align-items-center">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              关闭
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('avatar').addEventListener('change', function (event) {
+    let reader = new FileReader();
+    reader.onload = function () {
+      let previewImage = document.getElementById('previewImage');
+      previewImage.src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+  });
+
+    // 监听表单外的按钮点击事件
+  document.getElementById('confirmModify').addEventListener('click', function() {
+    // 手动触发表单提交
+  document.getElementById('modifyForm').submit();
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'common/base.html' %} 
+<!-- 继承基础模板 -->
+
+{% block content %}
+{% if post_dsp %}
+  <div class="container">
+    <div class="list-group">
+      {% for one_post in post_dsp %}
+        <a href="#" class="list-group-item list-group-item-action">
+          <span> {{ one_post.author }} | {{ one_post.post_time }}</span>
+          <h5>{{ one_post.title }}</h5>
+          <p>{{ one_post.brife }}</p>
+          <span>{{ one_post.like_count }}</span>
+        </a>
+      {% endfor %}
+      </div>
+  </div>
+{% else %}
+<style>
+  .info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+</style>
+  <div class="container-fluid">
+      <p class="info"> the list is empty</p>        
+  </div>
+{% endif %}
+{% endblock %}

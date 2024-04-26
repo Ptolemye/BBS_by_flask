@@ -1,0 +1,26 @@
+<!-- @format -->
+<div class="d-flex flex-column flex-shrink-0 p-3 text-black" style="width: 150px;">
+    <ul class="nav nav-pills flex-colum">
+        <li class="nav-item">
+            <a href="/profile/{{ user_data.user_id }}/introduct"
+                class="nav-link link-success {% if request.path == '/profile/' ~user_data.user_id ~ '/introduct/' %}active{% endif %}"
+                aria-current="page">
+                个人资料
+            </a>
+        </li>
+        <li>
+            <a href="/profile/{{ user_data.user_id }}/posts"
+                class="nav-link link-success {% if request.path == '/profile/' ~user_data.user_id~ '/posts/' %}active{% endif %}"
+                aria-current="page">
+                个人帖子
+            </a>
+        </li>
+        <li>
+            <a href="/profile/{{ user_data.user_id }}/comments"
+                class="nav-link link-success {% if request.path == '/profile/' ~user_data.user_id~ '/comments/' %}active{% endif %}"
+                aria-current="page">   
+                个人评论
+            </a>
+        </li>
+    </ul>
+</div>

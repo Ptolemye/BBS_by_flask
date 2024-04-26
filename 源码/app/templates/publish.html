@@ -1,0 +1,123 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    发布页面
+{% endblock  %}
+
+{% block content %}
+<!-- 引入 css -->
+<link rel="stylesheet" href="{{url_for('static', filename = 'css/style.css')}}">
+<!-- CDN引入 <link href="https://unpkg.com/@wangeditor/editor@latest/dist/css/style.css" rel="stylesheet"> -->
+<style>
+    #editor-warpper {
+        border: 1px solid #ccc;
+        z-index: 100;
+    }
+    #toolbar-container {
+        border-bottom: 1px solid #ccc;
+    }
+    #editor-container {
+        min-height: 500px;
+    }
+</style>
+<div class="container border rounded-3 p-3 bg-light">
+    <div class="row">
+        <div class="col">
+            <form id="post_part" action="{{ request.path }}" method="post">
+                <div class="row align-items-center mb-3">
+                    <div class="col-3">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="请输入标题:" maxlength="15" required>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control form-control-sm" id="summary" name="summary" placeholder="请输入简介" maxlength="30" required>
+                    </div>
+                </div>
+                <input type="hidden" name="content" id="content">
+            </form>
+        </div>
+        <div class="col-1 d-flex justify-content-center align-items-center">
+            <button type="button" id="confirSubmit" class="btn btn-primary">提交</button>
+        </div>
+        <div class="col-1 d-flex justify-content-center align-items-center">
+            <a href="/" class="btn btn-outline-success">取消</a>
+        </div>
+    </div>
+    <div id="editor-warpper">
+        <div id="toolbar-container">
+            <!-- 工具栏 -->
+        </div>
+        <div id="editor-container">
+            <!-- 编辑器 -->
+        </div>
+    </div>
+</div>
+<!-- 引入 js -->
+<script src="{{url_for('static', filename = 'js/index.js')}}"></script>
+<!-- CDN引入 <script src="https://unpkg.com/@wangeditor/editor@latest/dist/index.js"></script> -->
+<script>
+const { createEditor, createToolbar } = window.wangEditor
+
+// 编辑器配置
+const editorConfig = {
+    placeholder: 'Type here...',
+    onChange(editor) {
+        // 当编辑器选区发生改变时触发函数
+
+        // getHtml() and getText()
+        // const html = editor.getHtml()
+        // console.log('editor content', html)
+    },
+    onCreated(editor) {
+        // console.log(toolbar.getConfig().toolbarKeys)
+    }
+}
+const editor = createEditor({
+    selector: '#editor-container',
+    // 默认html内容
+    html: '<p><br></p>',
+    config: editorConfig,
+    mode: 'default', // 两种模式default 和simple
+})
+
+// 工具栏配置
+const toolbarConfig = {
+    // 排除菜单
+    excludeKeys: [
+    'group-image',
+    'insertVideo',
+    'insertTable',
+    'group-video',
+    ]
+}
+const toolbar = createToolbar({
+    editor,
+    selector: '#toolbar-container',
+    config: toolbarConfig,
+    mode: 'default',
+
+})
+
+document.getElementById('confirSubmit').addEventListener('click', function() {
+    // 检测编辑器内容
+    let text = editor.getText()
+    console.log(text)
+    if (text == null || text.trim() == '') {
+        window.alert("请完整输入帖子信息")
+        return;
+    } else {
+    // 获取编辑器内容
+    const content = editor.getHtml();
+    let contentInput =  document.getElementById('content');
+    contentInput.value = content;
+    const form = document.getElementById('post_part');
+    if (form.checkValidity()) {
+        form.submit();
+    } else {
+        form.reportValidity();
+    }
+    {#document.getElementById('post_part').submit();#}
+    }
+})
+</script>
+    
+{% endblock  %}

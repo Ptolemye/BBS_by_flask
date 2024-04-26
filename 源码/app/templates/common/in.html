@@ -1,0 +1,39 @@
+<!-- login.html -->
+
+<!DOCTYPE html>
+<html lang="ch">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}">
+    <title>{% block title %} login {% endblock %}</title>
+    <style>
+        body {
+            background-image: linear-gradient(to left, #2CD8D5 0%, #C5C1FF 56%, #FFBAC3 100%);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .custom-container {
+            position: fixed;
+            width: 50%;
+            top: 50%;
+            height: fit-content;
+            transform: translateY(-50%);
+            padding: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container bg-light custom-container">
+        {% block content %}
+        <!-- 内容界面 -->
+        {% endblock %}
+    </div>
+</body>
+
+</html>
